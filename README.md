@@ -4,8 +4,9 @@ Financial Valuation Tools
 
 ### Install
 - Node.js
-- Inside core-api, 'npm install express'
-- development.js file
+- In core-api folder, 'npm install express'
+- Get development.js file from someone
 
 ### Running
-- Run index.html and server.js
+- In dutoly folder, run index.html
+- In core-api folder, run server.js
