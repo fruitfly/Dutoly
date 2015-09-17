@@ -1,7 +1,8 @@
 var express = require('express'),
     app = express(),
     config = require('./config/development.js'),
-    request = require('request');
+    request = require('request'),
+    async = require('async');
 
 app.get('/', function(req, res) {
     res.header("Access-Control-Allow-Origin", "http://localhost:8000");
@@ -15,15 +16,34 @@ app.get('/10k/:ticker/:year', function(req, res) {
     res.header("Access-Control-Allow-Methods", "GET");
     var ticker = req.params.ticker,
         year = req.params.year,
-        apiKey = config.apiKey,
-        options = {
-            url: 'http://sec.kimonolabs.com/companies/' + ticker + '/forms/10-K/ANN/' + year + '?apiKey=' + apiKey
-        };
+        apiKey = config.apiKey;
 
-        request(options, function(err, response, body) {
-            console.log(body);
-            res.send(200, body);
-        });
+    async.parallel({
+        year1: function(callback) {
+            var year1endpoint = {url: 'http://sec.kimonolabs.com/companies/' + ticker + '/forms/10-K/ANN/' + year + '?apiKey=' + apiKey};
+            request(year1endpoint, function(err, response, body) {
+                callback(err, body);
+            });
+        },
+        year2: function(callback) {
+            var year2endpoint = {url: 'http://sec.kimonolabs.com/companies/' + ticker + '/forms/10-K/ANN/' + (year - 1) + '?apiKey=' + apiKey};
+            request(year2endpoint, function(err, response, body) {
+                callback(err, body);
+            });
+        },
+        year3: function(callback) {
+            var year3endpoint = {url: 'http://sec.kimonolabs.com/companies/' + ticker + '/forms/10-K/ANN/' + (year - 2) + '?apiKey=' + apiKey};
+            request(year3endpoint, function(err, response, body) {
+                callback(err, body);
+            });
+        }
+    }, function(err, result) {
+        if (err) {
+            res.send(400, err);
+        } else {
+            res.send(200, result);
+        }
+    });
 });
 
 // Port
