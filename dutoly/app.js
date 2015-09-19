@@ -7,8 +7,15 @@ app.controller('MainController', ['$scope', '$http', function($scope, $http) {
 
     $scope.getFinancials = function() {
         $http.get('http://localhost:4000/10K/' + $scope.ticker + '/' + $scope.year).then(function(res) {
-            $scope.data = res.data
-            console.log(res.data['year1']);
+            _.forEach(res.data, function(d) {
+                console.log(d);
+                d.EBI = d.ebit - (d.incomebeforetaxes - d.netincome);
+                d.DnA = d.cfdepreciationamortization;
+                d.CAPEX = -1*d.capitalexpenditures;
+                d.changeinWCap = d.totalcurrentassets - d.totalcurrentliabilities;
+                d.FCF = parseInt(d.EBI) + parseInt(d.DnA) - parseInt(d.CAPEX) - parseInt(d.changeinWCap);
+            });
+            $scope.data = res.data;
         });
     };
 }]);

@@ -14,6 +14,9 @@
     <!-- Angular -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
 
+    <!-- Lodash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+
     <!-- App -->
     <script src="app.js"></script>
  
@@ -31,6 +34,13 @@
         <div data-ng-repeat="(key, value) in d track by $index">
           {{key}}: {{value}}
         </div>
+        <hr/>
+        <h5>Earnings Before Interest: {{d.EBI}}</h5>
+        <h5>+ Depreciation & Amortization: {{d.DnA}}</h5>
+        <h5>- CAPEX: {{d.CAPEX}}</h5>
+        <h5>- changeinWCap: {{d.changeinWCap}}</h5>
+        <hr/>
+        <h5>FCF: {{d.FCF}}</h5>
       </div>
     </div>
   </body>
