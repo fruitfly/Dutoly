@@ -11,7 +11,6 @@ app.get('/', function(req, res) {
 });
 
 app.get('/10k/:ticker/:year', function(req, res) {
-    console.log(req.params);
     res.header("Access-Control-Allow-Origin", "http://localhost:8000");
     res.header("Access-Control-Allow-Methods", "GET");
     var ticker = req.params.ticker,
@@ -22,19 +21,19 @@ app.get('/10k/:ticker/:year', function(req, res) {
         year1: function(callback) {
             var year1endpoint = {url: 'http://sec.kimonolabs.com/companies/' + ticker + '/forms/10-K/ANN/' + year + '?apiKey=' + apiKey};
             request(year1endpoint, function(err, response, body) {
-                callback(err, body);
+                callback(err, JSON.parse(body)[0]);
             });
         },
         year2: function(callback) {
             var year2endpoint = {url: 'http://sec.kimonolabs.com/companies/' + ticker + '/forms/10-K/ANN/' + (year - 1) + '?apiKey=' + apiKey};
             request(year2endpoint, function(err, response, body) {
-                callback(err, body);
+                callback(err, JSON.parse(body)[0]);
             });
         },
         year3: function(callback) {
             var year3endpoint = {url: 'http://sec.kimonolabs.com/companies/' + ticker + '/forms/10-K/ANN/' + (year - 2) + '?apiKey=' + apiKey};
             request(year3endpoint, function(err, response, body) {
-                callback(err, body);
+                callback(err, JSON.parse(body)[0]);
             });
         }
     }, function(err, result) {

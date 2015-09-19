@@ -25,7 +25,14 @@
     <input data-ng-model="ticker" type="text"></input>
     <input data-ng-model="year" type="text"></input>
     <button class="btn btn-md" data-ng-click="getFinancials()">Get 10K</button>
-    {{data}}
+    <div class="col-xs-12">
+      <div class="col-xs-4" data-ng-repeat="d in data">
+        <h5>{{d.year}}</h5>
+        <div data-ng-repeat="(key, value) in d track by $index">
+          {{key}}: {{value}}
+        </div>
+      </div>
+    </div>
   </body>
 
 </html>
