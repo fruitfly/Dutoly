@@ -36,6 +36,15 @@ app.get('/10k/:ticker/:year', function(req, res) {
             request(year3endpoint, function(err, response, body) {
                 callback(err, JSON.parse(body)[0]);
             });
+        },
+        yql: function(callback) {
+            var YQL = require('yql');
+            var query = new YQL('select * from yahoo.finance.quote where symbol="' + ticker + '"');
+            query.exec(function (err, response) {
+                console.log(response.query.results.quote);
+                callback(err, response.query.results.quote);
+                // Do something with results (response.query.results)
+            });
         }
     }, function(err, result) {
         if (err) {
@@ -44,24 +53,6 @@ app.get('/10k/:ticker/:year', function(req, res) {
             res.send(200, result);
         }
     });
-});
-
-// YQL
-
-app.get('/yql', function(req, res) {
-    var YQL = require('yql');
-    var query = new YQL('SHOW TABLES');
-    query.exec(function (error, response) {
-        console.log(response.query.results.table);
-        res.send(200);
-        // Do something with results (response.query.results)
-    });
-
-    /*var consumerKey = config.consumerKey;
-    var yqlendpoint = {url: 'http://query.yahooapis.com/v1/yql', consumerKey: consumerKey};
-    request(yqlendpoint, function(err, response, body) {
-        res.send(200, body);
-    });*/
 });
 
 // Port
