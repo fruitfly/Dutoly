@@ -10,6 +10,7 @@ app.get('/', function(req, res) {
     res.send('Server is running');
 });
 
+// Kimono
 app.get('/10k/:ticker/:year', function(req, res) {
     res.header("Access-Control-Allow-Origin", "http://localhost:8000");
     res.header("Access-Control-Allow-Methods", "GET");
@@ -43,6 +44,24 @@ app.get('/10k/:ticker/:year', function(req, res) {
             res.send(200, result);
         }
     });
+});
+
+// YQL
+
+app.get('/yql', function(req, res) {
+    var YQL = require('yql');
+    var query = new YQL('SHOW TABLES');
+    query.exec(function (error, response) {
+        console.log(response.query.results.table);
+        res.send(200);
+        // Do something with results (response.query.results)
+    });
+
+    /*var consumerKey = config.consumerKey;
+    var yqlendpoint = {url: 'http://query.yahooapis.com/v1/yql', consumerKey: consumerKey};
+    request(yqlendpoint, function(err, response, body) {
+        res.send(200, body);
+    });*/
 });
 
 // Port

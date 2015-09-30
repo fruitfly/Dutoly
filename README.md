@@ -4,7 +4,7 @@ Financial Valuation Tools
 
 ### Install
 - Node.js
-- In core-api folder, 'npm install express'
+- In core-api folder, npm install 'express' and 'yql'
 - Get development.js file from someone
 
 ### Running
